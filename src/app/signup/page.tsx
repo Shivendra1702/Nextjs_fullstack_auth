@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios  from "axios";
+import axios from "axios";
 import { toast } from "react-hot-toast";
 
 export default function SignUpPage() {
@@ -45,43 +45,60 @@ export default function SignUpPage() {
   }, [user]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1 className="p-4">{loading ? "processing" : "SignUp"}</h1>
-      <hr />
-      <label htmlFor="username">username</label>
-      <input
-        className="p-2 mb-6 text-black"
-        type="text"
-        id="username"
-        value={user.username}
-        placeholder="Username..."
-        onChange={(e) => setUser({ ...user, username: e.target.value })}
-      />
+    <div className="font-sans flex bg-gradient-to-b from-red-400 to-red-300 flex-col items-center justify-center min-h-screen py-2">
+      <h1 className="p-4 text-3xl ">{loading ? "processing" : "SignUp"}</h1>
+      <div
+        id="form_wrapper"
+        className="h-fit py-4  px-16 w-fit  border-4 border-gray-200 rounded-xl shadow-md flex flex-col items-center justify-center space-y-4
+        "
+      >
+        <hr />
+        <label htmlFor="username" className="text-red-200">
+          Username
+        </label>
+        <input
+          className="p-2 mb-6 text-black border-2 border-gray-200 rounded-md outline-none focus:border-gray-400"
+          type="text"
+          id="username"
+          value={user.username}
+          placeholder="Username..."
+          onChange={(e) => setUser({ ...user, username: e.target.value })}
+        />
 
-      <label htmlFor="email">email</label>
-      <input
-        className="p-2 mb-6 text-black"
-        type="text"
-        id="email"
-        value={user.email}
-        placeholder="Email..."
-        onChange={(e) => setUser({ ...user, email: e.target.value })}
-      />
+        <label className="text-red-200" htmlFor="email">
+          Email
+        </label>
+        <input
+          className="p-2 mb-6 text-black border-2 border-gray-200 rounded-md outline-none focus:border-gray-400"
+          type="text"
+          id="email"
+          value={user.email}
+          placeholder="Email..."
+          onChange={(e) => setUser({ ...user, email: e.target.value })}
+        />
 
-      <label htmlFor="password">password</label>
-      <input
-        className="p-2 mb-6 text-black"
-        type="password"
-        id="password"
-        value={user.password}
-        placeholder="Password..."
-        onChange={(e) => setUser({ ...user, password: e.target.value })}
-      />
+        <label className="text-red-200" htmlFor="password">
+          Password
+        </label>
+        <input
+          className="p-2 mb-6 text-black border-2 border-gray-200 rounded-md outline-none focus:border-gray-400"
+          type="password"
+          id="password"
+          value={user.password}
+          placeholder="Password..."
+          onChange={(e) => setUser({ ...user, password: e.target.value })}
+        />
 
-      <button className="p-2 mb-4 bg-stone-500" onClick={onSignup}>
-        {buttonDisabled ? "No SignUp" : "SignUp"}
-      </button>
-      <Link href="/login">Visit Login Page</Link>
+        <button
+          className="bg-red-400 p-3 hover:bg-red-500 rounded-md"
+          onClick={onSignup}
+        >
+          {buttonDisabled ? "No SignUp" : "SignUp"}
+        </button>
+        <Link href="/login">
+          <span className="text-blue-500">Visit Login Page</span>
+        </Link>
+      </div>
     </div>
   );
 }

@@ -2,11 +2,11 @@
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 export default function ProfilePage() {
-  const [data, setData] = useState("Nothing");
+  const [data, setData] = useState({} as any);
   const router = useRouter();
   const handleLogout = async () => {
     try {
@@ -19,30 +19,47 @@ export default function ProfilePage() {
     }
   };
 
-  const getUserDetails = async () => {
-    const res = await axios.get("/api/users/me");
-    console.log(res);
-    setData(res.data.data._id);
-  };
+  // const getUserDetails = async () => {};
+
+  useEffect(() => {
+    async function userData() {
+      try {
+        const res = await axios.get("/api/users/me");
+        console.log(res);
+        setData(res.data.data);
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    }
+    userData();
+  }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1>Profile</h1>
+    <div className="font-sans flex bg-gradient-to-b from-red-400 to-red-300 flex-col items-center justify-center min-h-screen py-2">
+      <h1 className="text-red-100 text-2xl p-4">Profile</h1>
       <hr />
-      <p className="p-2">Profile Page</p>
-      <h2>
-        {data === "Nothing" ? (
-          "Nothing"
-        ) : (
-          <Link href={`/profile/${data}`}>{data}</Link>
-        )}
-      </h2>
-      <button onClick={handleLogout} className="p-2 bg-stone-500">
-        Log Out
-      </button>
-      <button onClick={getUserDetails} className="bg-red-500">
-        GetUserDetails{" "}
-      </button>
+
+      <div className="h-fit py-5 px-8 w-fit  border-4 border-gray-200 rounded-xl shadow-md flex flex-col items-center justify-center space-y-4">
+        <h2>
+          {!data ? (
+            "Loading user data..."
+          ) : (
+            <div>
+              <p className="p-2">
+                <span className="text-red-500">User ID</span> : <Link href={`/profile/${data._id}`}>{data._id}</Link>
+              </p>
+              <p className="p-2"><span className="text-red-500">Name</span> : {data.username}</p>
+              <p className="p-2"><span className="text-red-500">Email</span> : {data.email}</p>
+            </div>
+          )}
+        </h2>
+        <button
+          onClick={handleLogout}
+          className="bg-red-400 p-3 hover:bg-red-500 rounded-md"
+        >
+          Log Out
+        </button>
+      </div>
     </div>
   );
 }
